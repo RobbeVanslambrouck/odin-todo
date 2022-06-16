@@ -20,15 +20,20 @@ export const main = (() => {
 export const footer = (() => {
     const footer = document.createElement('footer');
 
-    const gitHubLink = document.createElement('a');
-    gitHubLink.href = 'https://github.com/RobbeVanslambrouck';
-    gitHubLink.target = '_blank';
-    gitHubLink.textContent = ' robbe vanslambrouck';
+    const footerText = document.createElement('p');
+    footerText.textContent = 'made by: ';
+
+    const githubLink = document.createElement('a');
+    githubLink.href = 'https://github.com/RobbeVanslambrouck';
+    githubLink.target = '_blank';
+    githubLink.textContent = ' robbe vanslambrouck';
     
     const githubLogo = document.createElement('i');
-    gitHubLink.className = 'fa-brands fa-github';
-    gitHubLink.prepend(githubLogo);
+    githubLogo.className = 'fa-brands fa-github';
+    githubLink.prepend(githubLogo);
 
-    footer.append(gitHubLink);
+    footerText.append(githubLink);
+
+    footer.append(footerText);
     return footer;
 })();
