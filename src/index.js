@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import { Todo } from './todo';
-import { header, main, footer, TodoCard, TodoPage } from './domElements';
+import { header, main, footer, TodoCard, TodoPage, AddTodoPage } from './domElements';
 import './styles/reset.css';
 import './styles/style.css';
 import './assets/css/all.css';
@@ -13,4 +13,4 @@ document.body.append(header, contentContainer, footer);
 //     contentContainer.append(testTodo);
 // }
 
-contentContainer.append(TodoPage);
+contentContainer.append(AddTodoPage);

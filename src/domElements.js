@@ -108,6 +108,35 @@ export const TodoPage = ((title ='', desc = '', date = new Date()) => {
 
 })();
 
+export const AddTodoPage = ((title ='', desc = '', date = new Date()) => {
+    const todoPage = document.createElement('div');
+    todoPage.className = 'todo-page';
+
+    const titleInput = document.createElement('input');
+    titleInput.className = 'title';
+    titleInput.value = title;
+    titleInput.type = 'text';
+
+    const descInput = document.createElement('textarea');
+    descInput.value = desc;
+    descInput.className = 'description';
+
+    const dateInput = document.createElement('input');
+    dateInput.className = 'datePicker';
+    dateInput.value = format(date, 'yyyy-MM-dd');
+    console.log(format(date, 'MM-dd-yyyy'));
+    dateInput.type = 'date';
+
+    const todoDoneBtn = document.createElement('button');
+    todoDoneBtn.className = 'add';
+    todoDoneBtn.type = 'button';
+    todoDoneBtn.textContent = 'add todo';
+
+    todoPage.append(titleInput, descInput, dateInput, todoDoneBtn);
+    return todoPage;
+
+})();
+
 const screenReaderOnlyText = (text) => {
     const srOnly = document.createElement('p');
     srOnly.textContent = text;

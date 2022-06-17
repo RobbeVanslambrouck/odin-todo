@@ -203,6 +203,13 @@ main {
     width: 10rem;
 }
 
+.todo-page .add {
+    grid-column: done / delete;
+    grid-row: done;
+    background-color: #009949;
+    height: 3rem;
+}
+
 .todo-page .addSubTodo {
     grid-area: addSubTodo;
     height: 6rem;
