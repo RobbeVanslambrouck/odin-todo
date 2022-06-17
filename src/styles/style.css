@@ -131,6 +131,89 @@ main {
     transition: 120ms transform ease-in-out;
 }
 
+.todo-page {
+    background-color: #fff;
+    box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.25);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "title title"
+                         "desc desc"
+                         "datePicker empty"
+                         "subTodos subTodos"
+                         "addSubTodo addSubTodo"
+                         "done delete";
+    row-gap: 1.5rem;
+}
+
+.todo-page .title {
+    grid-area: title;
+    padding: 0 0.5rem;
+    border: 1px solid #d9d9d9;
+    border-radius: 0.5rem;
+    font-size: 1.6rem;
+    box-sizing: border-box;
+    height: 2.5rem;
+}
+
+.todo-page .description {
+    grid-area: desc;
+    font-size: 1.1rem;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    border: 1px solid #d9d9d9;
+    border-radius: 0.5rem;
+    height: 10rem;
+}
+
+.todo-page .datePicker {
+    grid-area: datePicker;
+    box-sizing: border-box;
+    border: 1px solid #d9d9d9;
+    border-radius: 0.5rem;
+    padding: 0 0.5rem;
+    font-size: 1.6rem;
+    height: 2.5rem;
+
+}
+
+.todo-page button {
+    border: 1px solid #000;
+    border-radius: 0.5rem;
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: bold;
+    text-transform: capitalize;
+    cursor: pointer;
+}
+
+.todo-page .delete {
+    grid-area: delete;
+    background-color: #e63b29;
+    height: 3rem;
+    width: 10rem;
+    place-self: end;
+}
+
+.todo-page .done {
+    grid-area: done;
+    background-color: #009949;
+    height: 3rem;
+    width: 10rem;
+}
+
+.todo-page .addSubTodo {
+    grid-area: addSubTodo;
+    height: 6rem;
+    background-color: #009949;
+    margin-bottom: 1.5rem;
+}
+
+.todo-page .subTodos {
+    grid-area: subTodos;
+}
+
 footer {
     min-height: 5rem;
     font-size: 1.2rem;
@@ -151,6 +234,10 @@ footer {
     }
 
     .todo:hover {
+        transform: scale(1.02);
+    }
+
+    .todo-page button:hover {
         transform: scale(1.02);
     }
 }
