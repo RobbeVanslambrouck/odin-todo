@@ -37,3 +37,37 @@ export const footer = (() => {
     footer.append(footerText);
     return footer;
 })();
+
+export const TodoCard = (title = 'title', desc = 'description') => {
+    const todo = document.createElement('div');
+    todo.className = 'todo';
+
+    const checkbox = document.createElement('input');
+    checkbox.className = 'checkbox';
+    checkbox.type = 'checkbox';
+
+    const titleElement = document.createElement('h2');
+    titleElement.textContent = title;
+    titleElement.className = 'title';
+
+    const description = document.createElement('p');
+    description.textContent = desc;
+    description.className = 'description';
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'delete fa-solid fa-delete-left';
+    deleteBtn.type = 'button';
+    deleteBtn.append(screenReaderOnlyText('remove'));
+
+    todo.append(checkbox, titleElement, description, deleteBtn);
+
+    return todo;
+};
+
+const screenReaderOnlyText = (text) => {
+    const srOnly = document.createElement('p');
+    srOnly.textContent = text;
+    srOnly.className = 'sr-only';
+
+    return srOnly;
+}
