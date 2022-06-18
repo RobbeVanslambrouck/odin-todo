@@ -8,9 +8,9 @@ import './assets/css/all.css';
 const contentContainer = main;
 document.body.append(header, contentContainer, footer);
 
-// for (let i = 0; i<10; i++) {
-//     const testTodo = TodoCard(`Todo ${i}` , `description of todo ${i}.`);
-//     contentContainer.append(testTodo);
-// }
+for (let i = 0; i<10; i++) {
+    const testTodo = TodoCard(`Todo ${i}` , `description of todo ${i}.`);
+    contentContainer.append(testTodo);
+}
 
-contentContainer.append(AddTodoPage);
+contentContainer.append(TodoPage);

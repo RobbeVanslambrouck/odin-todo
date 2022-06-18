@@ -1,0 +1,94 @@
+.todo {
+    background-color: #fff;
+    border: #000 solid 1px;
+    border-radius: 0.5rem;
+    box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.25);
+    box-sizing: border-box;
+    column-gap: 1.5rem;
+    display: grid;
+    grid-template-areas: "check title del"
+    "check descr del";
+    grid-template-columns: 3rem auto 3rem;
+    height: 6rem;
+    margin: 0 auto;
+    margin-bottom: 1.5rem;
+    max-width: 40rem;
+    padding: 0 1.5rem;
+}
+
+.todo .title {
+    align-items: flex-end;
+    display: flex;
+    font-size: 1.6rem;
+    grid-area: title;
+    height: 3rem;
+    overflow: hidden;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.todo input[type="checkbox"] {
+    appearance: none;
+    background-color: #d9d9d9;
+    border: 1px solid #000;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    display: grid;
+    font: inherit;
+    grid-area: check;
+    height: 3rem;
+    margin: auto 0;
+    place-content: center;
+    width: 3rem;
+}
+
+.todo input[type="checkbox"]::before {
+    box-shadow: inset 2rem 2rem #00592B;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    content: "";
+    height: 2rem;
+    transform: scale(0);
+    transform-origin: center center;
+    transition: 120ms transform ease-in-out;
+    width: 2rem;
+}
+
+.todo input[type="checkbox"]:checked::before {
+    transform: scale(1);
+}
+
+.todo .description { -webkit-box-orient: vertical;
+    color: #595959;
+    display: -webkit-box;
+    font-size: 1.1rem;
+    grid-area: descr;
+    height: 2.2rem; -webkit-line-clamp: 2;
+    line-height: 1.1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+
+.todo .delete {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 3rem;
+    grid-area: del;
+    height: 3rem;
+    padding: 0;
+    place-self: center center;
+    transition: 120ms transform ease-in-out;
+    width: 3.375rem;
+}
+
+@media (hover :hover) {
+    
+    .todo .delete:hover {
+        transform: scale(1.2);
+    }
+
+    .todo:hover {
+        transform: scale(1.02);
+    }
+}
