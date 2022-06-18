@@ -1,4 +1,4 @@
-.todo {
+.todo-card {
     background-color: #fff;
     border: #000 solid 1px;
     border-radius: 0.5rem;
@@ -16,7 +16,7 @@
     padding: 0 1.5rem;
 }
 
-.todo .title {
+.todo-card .title {
     align-items: flex-end;
     display: flex;
     font-size: 1.6rem;
@@ -27,7 +27,7 @@
     white-space: nowrap;
 }
 
-.todo input[type="checkbox"] {
+.todo-card input[type="checkbox"] {
     appearance: none;
     background-color: #d9d9d9;
     border: 1px solid #000;
@@ -42,7 +42,7 @@
     width: 3rem;
 }
 
-.todo input[type="checkbox"]::before {
+.todo-card input[type="checkbox"]::before {
     box-shadow: inset 2rem 2rem #00592B;
     clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
     content: "";
@@ -53,11 +53,11 @@
     width: 2rem;
 }
 
-.todo input[type="checkbox"]:checked::before {
+.todo-card input[type="checkbox"]:checked::before {
     transform: scale(1);
 }
 
-.todo .description { -webkit-box-orient: vertical;
+.todo-card .description { -webkit-box-orient: vertical;
     color: #595959;
     display: -webkit-box;
     font-size: 1.1rem;
@@ -69,7 +69,7 @@
     word-wrap: break-word;
 }
 
-.todo .delete {
+.todo-card .delete {
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -84,11 +84,11 @@
 
 @media (hover :hover) {
     
-    .todo .delete:hover {
+    .todo-card .delete:hover {
         transform: scale(1.2);
     }
 
-    .todo:hover {
+    .todo-card:hover {
         transform: scale(1.02);
     }
 }

@@ -40,9 +40,10 @@ export const footer = (() => {
     return footer;
 })();
 
-export const TodoCard = (title = 'title', desc = 'description') => {
+export const TodoCard = (title = 'title', desc = 'description', removeCallBack = defaultOnClick, id = 0) => {
     const todo = document.createElement('div');
-    todo.className = 'todo';
+    todo.className = 'todo-card';
+    todo.id = id;
 
     const checkbox = document.createElement('input');
     checkbox.className = 'checkbox';
@@ -59,6 +60,7 @@ export const TodoCard = (title = 'title', desc = 'description') => {
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete fa-solid fa-delete-left';
     deleteBtn.type = 'button';
+    deleteBtn.onclick = removeCallBack;
     deleteBtn.append(screenReaderOnlyText('remove'));
 
     todo.append(checkbox, titleElement, description, deleteBtn);
@@ -108,7 +110,7 @@ export const TodoPage = ((title ='', desc = '', date = new Date()) => {
 
 })();
 
-export const AddTodoPage = ((title ='', desc = '', date = new Date()) => {
+export const AddTodoPage = (title ='', desc = '', date = new Date()) => {
     const todoPage = document.createElement('div');
     todoPage.className = 'todo-page';
 
@@ -135,7 +137,22 @@ export const AddTodoPage = ((title ='', desc = '', date = new Date()) => {
     todoPage.append(titleInput, descInput, dateInput, todoDoneBtn);
     return todoPage;
 
-})();
+};
+
+export const addTodoCard = (onclick) => {
+
+    const addTodoCard = document.createElement('div');
+    addTodoCard.className = 'add-todo-card';
+
+    const addTodoBtn = document.createElement('button');
+    addTodoBtn.className = 'add-todo-btn';
+    addTodoBtn.type = 'button';
+    addTodoBtn.textContent = 'add todo';
+    addTodoBtn.onclick = onclick;
+    addTodoCard.append(addTodoBtn);
+
+    return addTodoCard;
+};
 
 const screenReaderOnlyText = (text) => {
     const srOnly = document.createElement('p');
@@ -143,4 +160,8 @@ const screenReaderOnlyText = (text) => {
     srOnly.className = 'sr-only';
 
     return srOnly;
+}
+
+const defaultOnClick = () => {
+    console.log('click');
 }
