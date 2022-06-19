@@ -2,6 +2,7 @@
 @import './todo-card.css';
 @import './add-todo-card.css';
 @import './todo-page.css';
+@import './add-todo-page.css';
 
 :root {
     --light-text-color: #fff;

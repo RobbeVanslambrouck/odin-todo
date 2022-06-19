@@ -1,0 +1,78 @@
+.add-todo-page {
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.25);
+    margin: 0 auto;
+    max-width: 40rem;
+    padding: 1.5rem;
+}
+
+.add-todo-page .add-todo-form {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-areas: "title title"
+    "desc desc"
+    "datePicker empty"
+    "add-todo cancel";
+    grid-template-columns: 1fr 1fr;
+}
+
+.add-todo-page .title {
+    border: 1px solid #d9d9d9;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    font-size: 1.6rem;
+    grid-area: title;
+    height: 2.5rem;
+    padding: 0 0.5rem;
+}
+
+.add-todo-page .description {
+    border: 1px solid #d9d9d9;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    font-size: 1.1rem;
+    grid-area: desc;
+    height: 10rem;
+    padding: 0.5rem;
+}
+
+.add-todo-page .datePicker {
+    border: 1px solid #d9d9d9;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    font-size: 1.6rem;
+    grid-area: datePicker;
+    height: 2.5rem;
+    padding: 0 0.5rem;
+}
+
+.add-todo-page button {
+    border: 1px solid #000;
+    border-radius: 0.5rem;
+    box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.25);
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.6rem;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.add-todo-page .cancel {
+    background-color: #e63b29;
+    grid-area: cancel;
+    height: 3rem;
+}
+
+.add-todo-page .add {
+    background-color: #009949;
+    grid-area: add-todo;
+    height: 3rem;
+}
+
+@media (hover :hover) {
+
+    .add-todo-page button:hover {
+        transform: scale(1.02);
+    }
+}

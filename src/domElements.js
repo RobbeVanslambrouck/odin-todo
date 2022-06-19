@@ -110,34 +110,67 @@ export const TodoPage = ((title ='', desc = '', date = new Date()) => {
 
 })();
 
-export const AddTodoPage = (title ='', desc = '', date = new Date()) => {
-    const todoPage = document.createElement('div');
-    todoPage.className = 'todo-page';
+export const AddTodoPage = (() => {
+    const fromValues = {
+        'title': '',
+        'description': '',
+        'dueDate': new Date()
+    };
 
-    const titleInput = document.createElement('input');
-    titleInput.className = 'title';
-    titleInput.value = title;
-    titleInput.type = 'text';
+    const getAddTodoPage = (title ='', desc = '', date = new Date(), onclickAdd, onclickDelete) => {
+        
+        const todoPage = document.createElement('div');
+        todoPage.className = 'add-todo-page';
+    
+        const addTodoForm = document.createElement('form');
+        addTodoForm.className = 'add-todo-form';
+        addTodoForm.onsubmit = (e) => {
+            e.preventDefault();
+        }
+    
+        const titleInput = document.createElement('input');
+        titleInput.required = true;
+        titleInput.className = 'title';
+        titleInput.value = title;
+        titleInput.type = 'text';
+    
+        const descInput = document.createElement('textarea');
+        descInput.value = desc;
+        descInput.className = 'description';
+    
+        const dateInput = document.createElement('input');
+        dateInput.required = true;
+        dateInput.className = 'datePicker';
+        dateInput.value = format(date, 'yyyy-MM-dd');
+        console.log(format(date, 'MM-dd-yyyy'));
+        dateInput.type = 'date';
+    
+        const addTodoBtn = document.createElement('button');
+        addTodoBtn.className = 'add';
+        addTodoBtn.type = 'submit';
+        addTodoBtn.textContent = 'add todo';
+        addTodoBtn.onclick = () => {
+            fromValues.title = titleInput.value
+            fromValues.description = descInput.value
+            fromValues.dueDate = dateInput.value
+            onclickAdd();
+        };
+    
+        const cancelBtn = document.createElement('button');
+        cancelBtn.className = 'cancel';
+        cancelBtn.type = 'button';
+        cancelBtn.textContent = 'cancel';
+        cancelBtn.onclick = onclickDelete;
+    
+        addTodoForm.append(titleInput, descInput, dateInput, addTodoBtn, cancelBtn)
+        todoPage.append(addTodoForm);
 
-    const descInput = document.createElement('textarea');
-    descInput.value = desc;
-    descInput.className = 'description';
+        return todoPage
+    }
+    
+    return {getAddTodoPage, fromValues};
 
-    const dateInput = document.createElement('input');
-    dateInput.className = 'datePicker';
-    dateInput.value = format(date, 'yyyy-MM-dd');
-    console.log(format(date, 'MM-dd-yyyy'));
-    dateInput.type = 'date';
-
-    const todoDoneBtn = document.createElement('button');
-    todoDoneBtn.className = 'add';
-    todoDoneBtn.type = 'button';
-    todoDoneBtn.textContent = 'add todo';
-
-    todoPage.append(titleInput, descInput, dateInput, todoDoneBtn);
-    return todoPage;
-
-};
+})();
 
 export const addTodoCard = (onclick) => {
 

@@ -8,12 +8,12 @@ import './assets/css/all.css';
 // stopPropagation();
 // preventDefault();
 
-let todos = {};
+let todos = [];
 
 const contentContainer = main;
 document.body.append(header, contentContainer, footer);
 
-for (let i = 0; i<50; i++) {
+for (let i = 0; i<10; i++) {
     const todo = Todo(`Todo ${i}`);
     todo.description = `description of todo ${i}.`;
     todos[i] = todo;
@@ -40,8 +40,20 @@ const clear = () => {
 
 const addTodoHandler = () => {
     clear();
-    contentContainer.append(AddTodoPage());
+    contentContainer.append(AddTodoPage.getAddTodoPage('', '', new Date(), addTodo, (e) => {
+        clear();
+        showTodos(todos);
+    }));
 };
+
+const addTodo = () => {
+    const todo = Todo(AddTodoPage.fromValues.title);
+    todo.description = AddTodoPage.fromValues.description;
+    todo.dueDate = new Date(AddTodoPage.fromValues.dueDate);
+    todos.push(todo);
+    clear();
+    showTodos(todos);
+}
 
 contentContainer.append(TodoPage);
 showTodos(todos);
