@@ -40,14 +40,21 @@ export const footer = (() => {
     return footer;
 })();
 
-export const TodoCard = (title = 'title', desc = 'description', removeCallBack = defaultOnClick, id = 0) => {
+export const TodoCard = (title = 'title', desc = 'description', removeCallBack = defaultOnClick, id = 0, onclickCard) => {
     const todo = document.createElement('div');
     todo.className = 'todo-card';
     todo.id = id;
+    todo.onclick = (e) => {
+        e.stopPropagation();
+        onclickCard(e);
+    }
 
     const checkbox = document.createElement('input');
     checkbox.className = 'checkbox';
     checkbox.type = 'checkbox';
+    checkbox.onclick = (e) => {
+        e.stopPropagation();
+    }
 
     const titleElement = document.createElement('h2');
     titleElement.textContent = title;
@@ -60,7 +67,10 @@ export const TodoCard = (title = 'title', desc = 'description', removeCallBack =
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete fa-solid fa-delete-left';
     deleteBtn.type = 'button';
-    deleteBtn.onclick = removeCallBack;
+    deleteBtn.onclick = (e) => {
+        e.stopPropagation();
+        removeCallBack(e);
+    }
     deleteBtn.append(screenReaderOnlyText('remove'));
 
     todo.append(checkbox, titleElement, description, deleteBtn);
@@ -68,45 +78,75 @@ export const TodoCard = (title = 'title', desc = 'description', removeCallBack =
     return todo;
 };
 
-export const TodoPage = ((title ='', desc = '', date = new Date()) => {
-    const todoPage = document.createElement('div');
-    todoPage.className = 'todo-page';
+export const TodoPage = (() => {
 
-    const titleInput = document.createElement('input');
-    titleInput.className = 'title';
-    titleInput.value = title;
-    titleInput.type = 'text';
 
-    const descInput = document.createElement('textarea');
-    descInput.value = desc;
-    descInput.className = 'description';
+    const setOnclickDone = (callback) => {
+        onclickDone = callback
+    }
 
-    const dateInput = document.createElement('input');
-    dateInput.className = 'datePicker';
-    dateInput.value = format(date, 'yyyy-MM-dd');
-    console.log(format(date, 'MM-dd-yyyy'));
-    dateInput.type = 'date';
+    const setOnclickDelete = (callback) => {
+        onclickDelete = callback;
+    }
 
-    const subTodosDiv = document.createElement('div');
-    subTodosDiv.className = 'subTodos';
+    let onclickDone = (e) => {};
+    let onclickDelete = (e) => {};
 
-    const addSubTodoBtn = document.createElement('button');
-    addSubTodoBtn.className = 'addSubTodo';
-    addSubTodoBtn.type = 'button';
-    addSubTodoBtn.textContent = 'add sub todo';
+    const fromValues = {
+        'title': '',
+        'description': '',
+        'dueDate': new Date()
+    };
+    
+    const getTodoPage = (title ='', desc = '', date = new Date()) => {
 
-    const todoDoneBtn = document.createElement('button');
-    todoDoneBtn.className = 'done';
-    todoDoneBtn.type = 'button';
-    todoDoneBtn.textContent = 'done';
+        const todoPage = document.createElement('div');
+        todoPage.className = 'todo-page';
+        
+        const titleInput = document.createElement('input');
+        titleInput.className = 'title';
+        titleInput.value = title;
+        titleInput.type = 'text';
+        
+        const descInput = document.createElement('textarea');
+        descInput.value = desc;
+        descInput.className = 'description';
+        
+        const dateInput = document.createElement('input');
+        dateInput.className = 'datePicker';
+        dateInput.value = format(date, 'yyyy-MM-dd');
+        console.log(format(date, 'MM-dd-yyyy'));
+        dateInput.type = 'date';
+        
+        const subTodosDiv = document.createElement('div');
+        subTodosDiv.className = 'subTodos';
+        
+        const addSubTodoBtn = document.createElement('button');
+        addSubTodoBtn.className = 'addSubTodo';
+        addSubTodoBtn.type = 'button';
+        addSubTodoBtn.textContent = 'add sub todo';
+        
+        const todoDoneBtn = document.createElement('button');
+        todoDoneBtn.className = 'done';
+        todoDoneBtn.type = 'button';
+        todoDoneBtn.textContent = 'done';
+        todoDoneBtn.onclick = (e) => {
+            fromValues.title = titleInput.value;
+            fromValues.description = descInput.value;
+            fromValues.dueDate = dateInput.value;
+            onclickDone(e);
+        }
+        const todoDeleteBtn = document.createElement('button');
+        todoDeleteBtn.className = 'delete';
+        todoDeleteBtn.type = 'button';
+        todoDeleteBtn.textContent = 'delete';
+        todoDeleteBtn.onclick = onclickDelete;
+        
+        todoPage.append(titleInput, descInput, dateInput, subTodosDiv, addSubTodoBtn, todoDoneBtn, todoDeleteBtn);
+        return todoPage;
+    }
 
-    const todoDeleteBtn = document.createElement('button');
-    todoDeleteBtn.className = 'delete';
-    todoDeleteBtn.type = 'button';
-    todoDeleteBtn.textContent = 'delete';
-
-    todoPage.append(titleInput, descInput, dateInput, subTodosDiv, addSubTodoBtn, todoDoneBtn, todoDeleteBtn);
-    return todoPage;
+    return { getTodoPage, setOnclickDone, setOnclickDelete, fromValues }
 
 })();
 
