@@ -5,79 +5,106 @@ import './styles/reset.css';
 import './styles/style.css';
 import './assets/css/all.css';
 
-// stopPropagation();
-// preventDefault();
-
 let todos = [];
 
-const contentContainer = main;
-document.body.append(header, contentContainer, footer);
+document.body.append(header, main, footer);
 
-for (let i = 0; i<10; i++) {
-    const todo = Todo(`Todo ${i}`);
-    todo.description = `description of todo ${i}.`;
-    todos[i] = todo;
-}
+function showTodoPage(todo = Todo(), parentTodos) {
 
-const showTodoPage = (id) => {
-    let todo = todos[id];
-    clear();
     TodoPage.setOnclickDone((e) => {
-        clear();
-        todos[id].title = TodoPage.fromValues.title;
-        todos[id].description = TodoPage.fromValues.description;
-        todos[id].dueDate = new Date(TodoPage.fromValues.dueDate);
-        showTodos(todos);
+        getTodoFrom(TodoPage, todo);
+        showTodos(parentTodos);
     });
-    TodoPage.setOnclickDelete((e) => {
-        clear();
-        delete todos[id];
-        showTodos(todos);
+
+    TodoPage.setOnclickCancel((e) => {
+        showTodos(parentTodos);
     });
-    contentContainer.append(TodoPage.getTodoPage(todo.title, todo.description, new Date(todo.dueDate)));
+
+    TodoPage.setOnclickAddSubTodo((e) => {
+        AddTodoPage.setOnclickAddTodo((e) => {
+            let subTodo = getTodoFrom(AddTodoPage);
+            todo.addSubTodo(subTodo);
+            showTodoPage(todo, parentTodos);
+        });
+        AddTodoPage.setOnclickCancel((e) => {
+            showTodoPage(todo, parentTodos);
+        });
+        showAddTodoPage();
+    });
+
+    TodoPage.setOnclickSubTodoCard((e) => {
+        const id = e.composedPath().find(e => e.id != '').id;
+        showTodoPage(todo.subTodos[id], parentTodos);
+    });
+
+    TodoPage.setOnclickSubTodoRemove((e) => {
+        const id = e.composedPath().find(e => e.id != '').id;
+        delete todo.subTodos[id];
+        showTodoPage(todo, parentTodos);
+    });
+
+    TodoPage.setOnclickSubTodoCheckbox((e) => {
+        const id = e.composedPath().find(e => e.id != '').id;
+        todo.subTodos[id].isDone = !todo.subTodos[id].isDone;
+        showTodoPage(todo, parentTodos);
+    });
+
+    clear();
+    main.append(TodoPage.getTodoPage(todo));
 } 
 
-const showTodos = (todos) => {
+function showTodos(todos) {
 
-    const onclickRemove = (e) => {
+    TodoCard.setOnclickCard((e) => {
+        const id = e.composedPath().find(e => e.id != '').id;
+        showTodoPage(todos[id], todos);
+    });
+
+    TodoCard.setOnclickRemove((e) => {
         const id = e.composedPath().find(e => e.id != '').id;
         delete todos[id];
         showTodos(todos);
-    }
+    });
 
-    const onclickCard = (e) => {
+    TodoCard.setOnclickCheckbox((e) => {
         const id = e.composedPath().find(e => e.id != '').id;
-        showTodoPage(id);
-    }
+        todos[id].isDone = !todos[id].isDone;
+        showTodos(todos);
+    });
 
     clear();
-    for(const key in todos) {
-        const todo = todos[key];
-        const todoCard = TodoCard(todo.title , todo.description, onclickRemove, key, onclickCard);
-        contentContainer.append(todoCard);
+    for (let i in todos) {
+        main.append(TodoCard.getTodoCard(todos[i], i));
     }
-    contentContainer.append(addTodoCard(addTodoHandler));
-};
+    main.append(addTodoCard(addTodoHandler));
+}
 
 const clear = () => {
-    contentContainer.innerHTML = '';
+    main.innerHTML = '';
 };
 
 const addTodoHandler = () => {
-    clear();
-    contentContainer.append(AddTodoPage.getAddTodoPage('', '', new Date(), addTodo, (e) => {
-        clear();
+    AddTodoPage.setOnclickAddTodo((e) => {
+        const todo = getTodoFrom(AddTodoPage);
+        todos.push(todo);
+        showTodoPage(todo, todos);
+    });
+    AddTodoPage.setOnclickCancel((e) => {
         showTodos(todos);
-    }));
+    });
+    showAddTodoPage();
 };
 
-const addTodo = () => {
-    const todo = Todo(AddTodoPage.fromValues.title);
-    todo.description = AddTodoPage.fromValues.description;
-    todo.dueDate = new Date(AddTodoPage.fromValues.dueDate);
-    todos.push(todo);
+function getTodoFrom(page, todo = Todo()) {
+    todo.title = page.formValues.title;
+    todo.description = page.formValues.description;
+    todo.dueDate = new Date(page.formValues.dueDate);
+    return todo;
+}
+
+function showAddTodoPage() {
     clear();
-    showTodos(todos);
+    main.append(AddTodoPage.getAddTodoPage());
 }
 
 showTodos(todos);

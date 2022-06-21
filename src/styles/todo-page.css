@@ -8,7 +8,7 @@
                          "datePicker empty"
                          "subTodos subTodos"
                          "addSubTodo addSubTodo"
-                         "done delete";
+                         "done cancel";
     grid-template-columns: 1fr 1fr;
     margin: 0 auto;
     max-width: 40rem;
@@ -16,7 +16,7 @@
     row-gap: 1.5rem;
 }
 
-.todo-page .title {
+.todo-page>.title {
     border: 1px solid #d9d9d9;
     border-radius: 0.5rem;
     box-sizing: border-box;
@@ -26,7 +26,7 @@
     padding: 0 0.5rem;
 }
 
-.todo-page .description {
+.todo-page>.description {
     border: 1px solid #d9d9d9;
     border-radius: 0.5rem;
     box-sizing: border-box;
@@ -36,7 +36,7 @@
     padding: 0.5rem;
 }
 
-.todo-page .datePicker {
+.todo-page>.datePicker {
     border: 1px solid #d9d9d9;
     border-radius: 0.5rem;
     box-sizing: border-box;
@@ -46,7 +46,7 @@
     padding: 0 0.5rem;
 }
 
-.todo-page button {
+.todo-page>button {
     border: 1px solid #000;
     border-radius: 0.5rem;
     color: #fff;
@@ -56,42 +56,42 @@
     text-transform: capitalize;
 }
 
-.todo-page .delete {
+.todo-page>.cancel {
     background-color: #e63b29;
-    grid-area: delete;
+    grid-area: cancel;
     height: 3rem;
     place-self: end;
     width: 10rem;
 }
 
-.todo-page .done {
+.todo-page>.done {
     background-color: #009949;
     grid-area: done;
     height: 3rem;
     width: 10rem;
 }
 
-.todo-page .add {
+.todo-page>.add {
     background-color: #009949;
     grid-column: done / delete;
     grid-row: done;
     height: 3rem;
 }
 
-.todo-page .addSubTodo {
+.todo-page>.addSubTodo {
     background-color: #009949;
     grid-area: addSubTodo;
     height: 6rem;
     margin-bottom: 1.5rem;
 }
 
-.todo-page .subTodos {
+.todo-page>.subTodos {
     grid-area: subTodos;
 }
 
 @media (hover :hover) {
 
-    .todo-page button:hover {
+    .todo-page>button:hover {
         transform: scale(1.02);
     }
 }

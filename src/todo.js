@@ -1,7 +1,9 @@
-export const Todo = (title = '') => {
+export const Todo = () => {
+    let title = '';
     let description = '';
     let dueDate = new Date();
     let subTodos = [];
+    let isDone = false;
 
     const addSubTodo = (subTodo) => {
         subTodos.push(subTodo);
@@ -21,6 +23,7 @@ export const Todo = (title = '') => {
         title,
         description,
         dueDate,
+        isDone,
         subTodos,
         addSubTodo,
         deleteSubTodo,
