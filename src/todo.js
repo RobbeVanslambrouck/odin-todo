@@ -30,3 +30,15 @@ export const Todo = () => {
         findSubTodo,
     }
 };
+
+export function TodoFrom(JSON) {
+    let todo = Todo();
+    todo.title = JSON.title;
+    todo.description = JSON.description;
+    todo.dueDate = new Date(JSON.dueDate);
+    todo.isDone = JSON.isDone;
+    for(const jsonSubTodo of JSON.subTodos) {
+        todo.addSubTodo(TodoFrom(jsonSubTodo));
+    }    
+    return todo;
+}

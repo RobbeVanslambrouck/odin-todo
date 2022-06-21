@@ -1,11 +1,16 @@
 import { format } from 'date-fns';
-import { Todo } from './todo';
+import { Todo, TodoFrom } from './todo';
 import { header, main, footer, TodoCard, TodoPage, AddTodoPage, addTodoCard } from './domElements';
 import './styles/reset.css';
 import './styles/style.css';
 import './assets/css/all.css';
 
 let todos = [];
+localStorage.removeItem('todos');
+
+if (localStorage.getItem('todos')) {
+    todos = getLocalySaved();
+}
 
 document.body.append(header, main, footer);
 
@@ -21,9 +26,11 @@ function showTodoPage(todo = Todo(), parentTodos) {
     });
 
     TodoPage.setOnclickAddSubTodo((e) => {
+        getTodoFrom(TodoPage, todo);
         AddTodoPage.setOnclickAddTodo((e) => {
             let subTodo = getTodoFrom(AddTodoPage);
             todo.addSubTodo(subTodo);
+            console.log(todo.addSubTodo);
             showTodoPage(todo, parentTodos);
         });
         AddTodoPage.setOnclickCancel((e) => {
@@ -39,7 +46,7 @@ function showTodoPage(todo = Todo(), parentTodos) {
 
     TodoPage.setOnclickSubTodoRemove((e) => {
         const id = e.composedPath().find(e => e.id != '').id;
-        delete todo.subTodos[id];
+        todo.subTodos.splice(id, 1);
         showTodoPage(todo, parentTodos);
     });
 
@@ -48,13 +55,12 @@ function showTodoPage(todo = Todo(), parentTodos) {
         todo.subTodos[id].isDone = !todo.subTodos[id].isDone;
         showTodoPage(todo, parentTodos);
     });
-
+    saveLocaly();
     clear();
     main.append(TodoPage.getTodoPage(todo));
 } 
 
 function showTodos(todos) {
-
     TodoCard.setOnclickCard((e) => {
         const id = e.composedPath().find(e => e.id != '').id;
         showTodoPage(todos[id], todos);
@@ -62,7 +68,7 @@ function showTodos(todos) {
 
     TodoCard.setOnclickRemove((e) => {
         const id = e.composedPath().find(e => e.id != '').id;
-        delete todos[id];
+        todos.splice(id, 1);
         showTodos(todos);
     });
 
@@ -71,7 +77,7 @@ function showTodos(todos) {
         todos[id].isDone = !todos[id].isDone;
         showTodos(todos);
     });
-
+    saveLocaly();
     clear();
     for (let i in todos) {
         main.append(TodoCard.getTodoCard(todos[i], i));
@@ -87,6 +93,7 @@ const addTodoHandler = () => {
     AddTodoPage.setOnclickAddTodo((e) => {
         const todo = getTodoFrom(AddTodoPage);
         todos.push(todo);
+        getLocalySaved();
         showTodoPage(todo, todos);
     });
     AddTodoPage.setOnclickCancel((e) => {
@@ -103,8 +110,27 @@ function getTodoFrom(page, todo = Todo()) {
 }
 
 function showAddTodoPage() {
+    saveLocaly();
     clear();
     main.append(AddTodoPage.getAddTodoPage());
+}
+
+function saveLocaly() {
+    if (todos.length === 0) {
+        localStorage.removeItem('todos');
+        return;
+    }
+    const s = JSON.stringify(todos);
+    localStorage.setItem('todos', s);
+}
+
+function getLocalySaved() {
+    const s = JSON.parse(localStorage.getItem('todos'))    
+    const todos = [];
+    for (const key in s) {
+        todos.push(TodoFrom(s[key]));
+    }
+    return todos;
 }
 
 showTodos(todos);
