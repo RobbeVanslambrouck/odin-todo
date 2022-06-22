@@ -1,136 +1,138 @@
-import { format } from 'date-fns';
+/* eslint-disable no-use-before-define */
 import { Todo, TodoFrom } from './todo';
-import { header, main, footer, TodoCard, TodoPage, AddTodoPage, addTodoCard } from './domElements';
+import {
+  header, main, footer, TodoCard, TodoPage, AddTodoPage, addTodoCard,
+} from './domElements';
 import './styles/reset.css';
 import './styles/style.css';
 import './assets/css/all.css';
 
 let todos = [];
-localStorage.removeItem('todos');
-
-if (localStorage.getItem('todos')) {
-    todos = getLocalySaved();
-}
-
-document.body.append(header, main, footer);
-
-function showTodoPage(todo = Todo(), parentTodos) {
-
-    TodoPage.setOnclickDone((e) => {
-        getTodoFrom(TodoPage, todo);
-        showTodos(parentTodos);
-    });
-
-    TodoPage.setOnclickCancel((e) => {
-        showTodos(parentTodos);
-    });
-
-    TodoPage.setOnclickAddSubTodo((e) => {
-        getTodoFrom(TodoPage, todo);
-        AddTodoPage.setOnclickAddTodo((e) => {
-            let subTodo = getTodoFrom(AddTodoPage);
-            todo.addSubTodo(subTodo);
-            console.log(todo.addSubTodo);
-            showTodoPage(todo, parentTodos);
-        });
-        AddTodoPage.setOnclickCancel((e) => {
-            showTodoPage(todo, parentTodos);
-        });
-        showAddTodoPage();
-    });
-
-    TodoPage.setOnclickSubTodoCard((e) => {
-        const id = e.composedPath().find(e => e.id != '').id;
-        showTodoPage(todo.subTodos[id], parentTodos);
-    });
-
-    TodoPage.setOnclickSubTodoRemove((e) => {
-        const id = e.composedPath().find(e => e.id != '').id;
-        todo.subTodos.splice(id, 1);
-        showTodoPage(todo, parentTodos);
-    });
-
-    TodoPage.setOnclickSubTodoCheckbox((e) => {
-        const id = e.composedPath().find(e => e.id != '').id;
-        todo.subTodos[id].isDone = !todo.subTodos[id].isDone;
-        showTodoPage(todo, parentTodos);
-    });
-    saveLocaly();
-    clear();
-    main.append(TodoPage.getTodoPage(todo));
-} 
-
-function showTodos(todos) {
-    TodoCard.setOnclickCard((e) => {
-        const id = e.composedPath().find(e => e.id != '').id;
-        showTodoPage(todos[id], todos);
-    });
-
-    TodoCard.setOnclickRemove((e) => {
-        const id = e.composedPath().find(e => e.id != '').id;
-        todos.splice(id, 1);
-        showTodos(todos);
-    });
-
-    TodoCard.setOnclickCheckbox((e) => {
-        const id = e.composedPath().find(e => e.id != '').id;
-        todos[id].isDone = !todos[id].isDone;
-        showTodos(todos);
-    });
-    saveLocaly();
-    clear();
-    for (let i in todos) {
-        main.append(TodoCard.getTodoCard(todos[i], i));
-    }
-    main.append(addTodoCard(addTodoHandler));
-}
-
-const clear = () => {
-    main.innerHTML = '';
-};
-
-const addTodoHandler = () => {
-    AddTodoPage.setOnclickAddTodo((e) => {
-        const todo = getTodoFrom(AddTodoPage);
-        todos.push(todo);
-        getLocalySaved();
-        showTodoPage(todo, todos);
-    });
-    AddTodoPage.setOnclickCancel((e) => {
-        showTodos(todos);
-    });
-    showAddTodoPage();
-};
-
-function getTodoFrom(page, todo = Todo()) {
-    todo.title = page.formValues.title;
-    todo.description = page.formValues.description;
-    todo.dueDate = new Date(page.formValues.dueDate);
-    return todo;
-}
-
-function showAddTodoPage() {
-    saveLocaly();
-    clear();
-    main.append(AddTodoPage.getAddTodoPage());
-}
 
 function saveLocaly() {
-    if (todos.length === 0) {
-        localStorage.removeItem('todos');
-        return;
-    }
-    const s = JSON.stringify(todos);
-    localStorage.setItem('todos', s);
+  if (todos.length === 0) {
+    localStorage.removeItem('todos');
+    return;
+  }
+  const s = JSON.stringify(todos);
+  localStorage.setItem('todos', s);
 }
 
 function getLocalySaved() {
-    const s = JSON.parse(localStorage.getItem('todos'))    
-    const todos = [];
-    for (const key in s) {
-        todos.push(TodoFrom(s[key]));
-    }
-    return todos;
+  const s = JSON.parse(localStorage.getItem('todos'));
+  const t = [];
+  if (s !== null) {
+    Object.values(s).forEach((todo) => {
+      t.push(TodoFrom(todo));
+    });
+  }
+  return t;
 }
+
+const clear = () => {
+  main.innerHTML = '';
+};
+
+function showAddTodoPage() {
+  saveLocaly();
+  clear();
+  main.append(AddTodoPage.getAddTodoPage());
+}
+
+function getTodoFrom(page, todo = Todo()) {
+  const t = todo;
+  t.title = page.formValues.title;
+  t.description = page.formValues.description;
+  t.dueDate = new Date(page.formValues.dueDate);
+  return t;
+}
+
+function showTodoPage(parentTodos, todo = Todo()) {
+  TodoPage.setOnclickDone(() => {
+    getTodoFrom(TodoPage, todo);
+    showTodos(parentTodos);
+  });
+
+  TodoPage.setOnclickCancel(() => {
+    showTodos(parentTodos);
+  });
+
+  TodoPage.setOnclickAddSubTodo(() => {
+    getTodoFrom(TodoPage, todo);
+    AddTodoPage.setOnclickAddTodo(() => {
+      const subTodo = getTodoFrom(AddTodoPage);
+      todo.addSubTodo(subTodo);
+      showTodoPage(parentTodos, todo);
+    });
+    AddTodoPage.setOnclickCancel(() => {
+      showTodoPage(parentTodos, todo);
+    });
+    showAddTodoPage();
+  });
+
+  TodoPage.setOnclickSubTodoCard((e) => {
+    const subTodo = e.composedPath().find((el) => el.id !== '');
+    showTodoPage(parentTodos, todo.subTodos[subTodo.id]);
+  });
+
+  TodoPage.setOnclickSubTodoRemove((e) => {
+    const subTodo = e.composedPath().find((el) => el.id !== '');
+    todo.subTodos.splice(subTodo.id, 1);
+    showTodoPage(parentTodos, todo);
+  });
+
+  TodoPage.setOnclickSubTodoCheckbox((e) => {
+    const subTodo = e.composedPath().find((el) => el.id !== '');
+    // eslint-disable-next-line no-param-reassign
+    todo.subTodos[subTodo.id].isDone = !todo.subTodos[subTodo.id].isDone;
+    showTodoPage(parentTodos, todo);
+  });
+  saveLocaly();
+  clear();
+  main.append(TodoPage.getTodoPage(todo));
+}
+
+function showTodos(todoArray) {
+  const addTodoHandler = () => {
+    AddTodoPage.setOnclickAddTodo(() => {
+      const todo = getTodoFrom(AddTodoPage);
+      todos.push(todo);
+      getLocalySaved();
+      showTodoPage(todos, todo);
+    });
+    AddTodoPage.setOnclickCancel(() => {
+      showTodos(todos);
+    });
+    showAddTodoPage();
+  };
+
+  TodoCard.setOnclickCard((e) => {
+    const { id } = e.composedPath().find((el) => el.id !== '');
+    showTodoPage(todoArray, todoArray[id]);
+  });
+
+  TodoCard.setOnclickRemove((e) => {
+    const { id } = e.composedPath().find((el) => el.id !== '');
+    todoArray.splice(id, 1);
+    showTodos(todoArray);
+  });
+
+  TodoCard.setOnclickCheckbox((e) => {
+    const { id } = e.composedPath().find((el) => el.id !== '');
+    // eslint-disable-next-line no-param-reassign
+    todoArray[id].isDone = !todoArray[id].isDone;
+    showTodos(todoArray);
+  });
+  saveLocaly();
+  clear();
+
+  todoArray.forEach((todo, i) => {
+    main.append(TodoCard.getTodoCard(todo, i));
+  });
+  main.append(addTodoCard(addTodoHandler));
+}
+todos = getLocalySaved();
+
+document.body.append(header, main, footer);
 
 showTodos(todos);
